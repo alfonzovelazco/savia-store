@@ -45,7 +45,7 @@
     "react-dom": "19.0.5"
   },
   "dependencies": {
-    "react": "^19.0.5",
-    "react-dom": "^19.0.5"
+    "react": "19.0.5",
+    "react-dom": "19.0.5"
   }
 }
