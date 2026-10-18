@@ -2,29 +2,54 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
+/* ── Savia Organics — Google Fonts ── */
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap');
+
+:root {
+  /* Brand colors */
+  --color-forest:   #3d5a3e;
+  --color-sage:     #6b8f71;
+  --color-mist:     #a8c5ac;
+  --color-cream:    #f5f0e8;
+  --color-ivory:    #faf7f2;
+  --color-bark:     #7a6652;
+  --color-charcoal: #2a2a2a;
+  --color-stone:    #5c5c5c;
+  --color-hairline: #ddd8cf;
+  --color-fog:      #edeae4;
+  --color-deep:     #1e2e1f;
+
+  /* Typography */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-label:   'DM Sans', Inter, sans-serif;
+  --font-body:    'Geist', Inter, sans-serif;
+}
+
+/* ── Global reset ── */
+html {
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+}
+
+body {
+  font-family: var(--font-body);
+  background-color: var(--color-ivory);
+  color: var(--color-charcoal);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 @layer utilities {
-  /* Chrome, Safari and Opera */
-  .no-scrollbar::-webkit-scrollbar {
-    display: none;
-  }
-
-  .no-scrollbar::-webkit-scrollbar-track {
-    background-color: transparent;
-  }
-
-  .no-scrollbar {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  .no-scrollbar::-webkit-scrollbar { display: none; }
+  .no-scrollbar::-webkit-scrollbar-track { background-color: transparent; }
+  .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
   input:focus ~ label,
   input:not(:placeholder-shown) ~ label {
     @apply -translate-y-2 text-xsmall-regular;
   }
 
-  input:focus ~ label {
-    @apply left-0;
-  }
+  input:focus ~ label { @apply left-0; }
 
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
@@ -35,9 +60,9 @@
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 1px solid #212121;
-    -webkit-text-fill-color: #212121;
-    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+    border: 1px solid var(--color-forest);
+    -webkit-text-fill-color: var(--color-charcoal);
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-ivory) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
@@ -54,59 +79,106 @@
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
 
+  /* ── Savia display serif ── */
+  .savia-display {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+  }
+
+  /* ── Savia label / button text ── */
+  .savia-label {
+    font-family: var(--font-label);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.057em;
+  }
+
+  /* ── Primary CTA button — forest green filled ── */
+  .btn-savia-primary {
+    @apply inline-flex items-center justify-center;
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.057em;
+    background-color: var(--color-forest);
+    color: #fff;
+    border: 1px solid var(--color-forest);
+    border-radius: 4px;
+    padding: 12px 24px;
+    transition: background-color 0.2s ease, opacity 0.2s ease;
+  }
+  .btn-savia-primary:hover {
+    background-color: var(--color-deep);
+    border-color: var(--color-deep);
+  }
+
+  /* ── Outlined button ── */
+  .btn-savia-outline {
+    @apply inline-flex items-center justify-center;
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.057em;
+    background-color: transparent;
+    color: var(--color-charcoal);
+    border: 1px solid var(--color-charcoal);
+    border-radius: 4px;
+    padding: 12px 24px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+  .btn-savia-outline:hover {
+    background-color: var(--color-charcoal);
+    color: #fff;
+  }
+
+  /* ── Ghost outlined (on dark panels) ── */
+  .btn-savia-ghost {
+    @apply inline-flex items-center justify-center;
+    font-family: var(--font-label);
+    font-weight: 700;
+    font-size: 14px;
+    text-transform: uppercase;
+    letter-spacing: 0.057em;
+    background-color: transparent;
+    color: #fff;
+    border: 1px solid #fff;
+    border-radius: 4px;
+    padding: 12px 24px;
+    transition: opacity 0.2s ease;
+  }
+  .btn-savia-ghost:hover { opacity: 0.8; }
+
+  /* ── Product card ── */
+  .product-card {
+    background-color: transparent;
+  }
+
+  /* ── Section rhythm ── */
+  .section-gap { @apply py-20; }
+  .section-gap-sm { @apply py-12; }
+
+  /* Contrast button (kept for backward compat) */
   .contrast-btn {
-    @apply px-4 py-2 border border-black rounded-full hover:bg-black hover:text-white transition-colors duration-200 ease-in;
+    @apply px-4 py-2 border border-savia-forest rounded-full hover:bg-savia-forest hover:text-white transition-colors duration-200 ease-in;
   }
 
-  .text-xsmall-regular {
-    @apply text-[10px] leading-4 font-normal;
-  }
-
-  .text-small-regular {
-    @apply text-xs leading-5 font-normal;
-  }
-
-  .text-small-semi {
-    @apply text-xs leading-5 font-semibold;
-  }
-
-  .text-base-regular {
-    @apply text-sm leading-6 font-normal;
-  }
-
-  .text-base-semi {
-    @apply text-sm leading-6 font-semibold;
-  }
-
-  .text-large-regular {
-    @apply text-base leading-6 font-normal;
-  }
-
-  .text-large-semi {
-    @apply text-base leading-6 font-semibold;
-  }
-
-  .text-xl-regular {
-    @apply text-2xl leading-[36px] font-normal;
-  }
-
-  .text-xl-semi {
-    @apply text-2xl leading-[36px] font-semibold;
-  }
-
-  .text-2xl-regular {
-    @apply text-[30px] leading-[48px] font-normal;
-  }
-
-  .text-2xl-semi {
-    @apply text-[30px] leading-[48px] font-semibold;
-  }
-
-  .text-3xl-regular {
-    @apply text-[32px] leading-[44px] font-normal;
-  }
-
-  .text-3xl-semi {
-    @apply text-[32px] leading-[44px] font-semibold;
-  }
+  /* Text utilities */
+  .text-xsmall-regular  { @apply text-[10px] leading-4 font-normal; }
+  .text-small-regular   { @apply text-xs leading-5 font-normal; }
+  .text-small-semi      { @apply text-xs leading-5 font-semibold; }
+  .text-base-regular    { @apply text-sm leading-6 font-normal; }
+  .text-base-semi       { @apply text-sm leading-6 font-semibold; }
+  .text-large-regular   { @apply text-base leading-6 font-normal; }
+  .text-large-semi      { @apply text-base leading-6 font-semibold; }
+  .text-xl-regular      { @apply text-2xl leading-[36px] font-normal; }
+  .text-xl-semi         { @apply text-2xl leading-[36px] font-semibold; }
+  .text-2xl-regular     { @apply text-[30px] leading-[48px] font-normal; }
+  .text-2xl-semi        { @apply text-[30px] leading-[48px] font-semibold; }
+  .text-3xl-regular     { @apply text-[32px] leading-[44px] font-normal; }
+  .text-3xl-semi        { @apply text-[32px] leading-[44px] font-semibold; }
 }

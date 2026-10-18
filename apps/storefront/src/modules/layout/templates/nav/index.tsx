@@ -18,43 +18,117 @@ export default async function Nav() {
 
   return (
     <div className="sticky top-0 inset-x-0 z-50 group">
-      <header className="relative h-16 mx-auto border-b duration-200 bg-white border-ui-border-base">
-        <nav className="content-container txt-xsmall-plus text-ui-fg-subtle flex items-center justify-between w-full h-full text-small-regular">
-          <div className="flex-1 basis-0 h-full flex items-center">
-            <div className="h-full">
+      <header
+        className="relative h-16 mx-auto"
+        style={{
+          backgroundColor: "var(--color-ivory)",
+          borderBottom: "1px solid var(--color-hairline)",
+        }}
+      >
+        <nav
+          className="content-container flex items-center justify-between w-full h-full"
+          style={{ fontFamily: "var(--font-label)" }}
+        >
+          {/* Left: hamburger menu (mobile) + nav links (desktop) */}
+          <div className="flex-1 basis-0 h-full flex items-center gap-x-6">
+            <div className="h-full small:hidden">
               <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+            </div>
+            <div className="hidden small:flex items-center gap-x-6 h-full">
+              {[
+                { href: "/store",              label: "Tienda"    },
+                { href: "/categories/jabones", label: "Jabones"   },
+                { href: "/categories/balsamos",label: "Bálsamos"  },
+                { href: "/categories/aceites", label: "Aceites"   },
+              ].map(({ href, label }) => (
+                <LocalizedClientLink
+                  key={href}
+                  href={href}
+                  className="transition-colors"
+                  style={{
+                    fontFamily: "var(--font-label)",
+                    fontWeight: 700,
+                    fontSize: "13px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.057em",
+                    color: "var(--color-charcoal)",
+                  }}
+                >
+                  {label}
+                </LocalizedClientLink>
+              ))}
             </div>
           </div>
 
+          {/* Center: Savia Organics wordmark */}
           <div className="flex items-center h-full">
             <LocalizedClientLink
               href="/"
-              className="txt-compact-xlarge-plus hover:text-ui-fg-base uppercase"
+              className="flex flex-col items-center leading-none"
               data-testid="nav-store-link"
             >
-              Medusa Store
+              <span
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "18px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "var(--color-forest)",
+                }}
+              >
+                Savia
+              </span>
+              <span
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 400,
+                  fontSize: "9px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.22em",
+                  color: "var(--color-bark)",
+                  marginTop: "-1px",
+                }}
+              >
+                · Organics ·
+              </span>
             </LocalizedClientLink>
           </div>
 
-          <div className="flex items-center gap-x-6 h-full flex-1 basis-0 justify-end">
+          {/* Right: search, account, cart */}
+          <div className="flex items-center gap-x-5 h-full flex-1 basis-0 justify-end">
             <Search />
-            <div className="hidden small:flex items-center gap-x-6 h-full">
+            <div className="hidden small:flex items-center gap-x-5 h-full">
               <LocalizedClientLink
-                className="hover:text-ui-fg-base"
                 href="/account"
                 data-testid="nav-account-link"
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "12px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.057em",
+                  color: "var(--color-stone)",
+                }}
               >
-                Account
+                Mi cuenta
               </LocalizedClientLink>
             </div>
             <Suspense
               fallback={
                 <LocalizedClientLink
-                  className="hover:text-ui-fg-base flex gap-2"
                   href="/cart"
                   data-testid="nav-cart-link"
+                  style={{
+                    fontFamily: "var(--font-label)",
+                    fontWeight: 700,
+                    fontSize: "12px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.057em",
+                    color: "var(--color-charcoal)",
+                  }}
                 >
-                  Cart (0)
+                  Cesta (0)
                 </LocalizedClientLink>
               }
             >

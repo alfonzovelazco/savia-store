@@ -1,157 +1,259 @@
-import { listCategories } from "@lib/data/categories";
-import { listCollections } from "@lib/data/collections";
-import { Text, clx } from "@modules/common/components/ui";
-
-import LocalizedClientLink from "@modules/common/components/localized-client-link";
-import MedusaCTA from "@modules/layout/components/medusa-cta";
+import { listCategories } from "@lib/data/categories"
+import { listCollections } from "@lib/data/collections"
+import { Text } from "@modules/common/components/ui"
+import LocalizedClientLink from "@modules/common/components/localized-client-link"
 
 export default async function Footer() {
-  const { collections } = await listCollections({
-    fields: "*products",
-  });
-  const productCategories = await listCategories();
+  const { collections } = await listCollections({ fields: "*products" })
+  const productCategories = await listCategories()
 
   return (
-    <footer className="border-t border-ui-border-base w-full">
-      <div className="content-container flex flex-col w-full">
-        <div className="flex flex-col gap-y-6 xsmall:flex-row items-start justify-between py-40">
-          <div>
-            <LocalizedClientLink
-              href="/"
-              className="txt-compact-xlarge-plus text-ui-fg-subtle hover:text-ui-fg-base uppercase"
-            >
-              Medusa Store
-            </LocalizedClientLink>
-          </div>
-          <div className="text-small-regular gap-10 md:gap-x-16 grid grid-cols-2 sm:grid-cols-3">
-            {productCategories && productCategories?.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Categories
-                </span>
-                <ul
-                  className="grid grid-cols-1 gap-2"
-                  data-testid="footer-categories"
-                >
-                  {productCategories?.slice(0, 6).map((c) => {
-                    if (c.parent_category) {
-                      return;
-                    }
+    <footer
+      style={{
+        backgroundColor: "var(--color-deep)",
+        borderTop: "1px solid rgba(255,255,255,0.08)",
+      }}
+    >
+      <div className="content-container py-20">
+        <div className="flex flex-col gap-y-12 small:flex-row small:gap-x-16 small:justify-between">
 
-                    const children =
-                      c.category_children?.map((child) => ({
-                        name: child.name,
-                        handle: child.handle,
-                        id: child.id,
-                      })) || null;
-
-                    return (
-                      <li
-                        className="flex flex-col gap-2 text-ui-fg-subtle txt-small"
-                        key={c.id}
-                      >
-                        <LocalizedClientLink
-                          className={clx(
-                            "hover:text-ui-fg-base",
-                            children && "txt-small-plus"
-                          )}
-                          href={`/categories/${c.handle}`}
-                          data-testid="category-link"
-                        >
-                          {c.name}
-                        </LocalizedClientLink>
-                        {children && (
-                          <ul className="grid grid-cols-1 ml-3 gap-2">
-                            {children &&
-                              children.map((child) => (
-                                <li key={child.id}>
-                                  <LocalizedClientLink
-                                    className="hover:text-ui-fg-base"
-                                    href={`/categories/${child.handle}`}
-                                    data-testid="category-link"
-                                  >
-                                    {child.name}
-                                  </LocalizedClientLink>
-                                </li>
-                              ))}
-                          </ul>
-                        )}
-                      </li>
-                    );
-                  })}
-                </ul>
+          {/* Brand column */}
+          <div className="max-w-xs">
+            {/* Wordmark */}
+            <div className="mb-4">
+              <div
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "20px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.12em",
+                  color: "var(--color-mist)",
+                }}
+              >
+                Savia
               </div>
-            )}
-            {collections && collections.length > 0 && (
-              <div className="flex flex-col gap-y-2">
-                <span className="txt-small-plus txt-ui-fg-base">
-                  Collections
-                </span>
-                <ul
-                  className={clx(
-                    "grid grid-cols-1 gap-2 text-ui-fg-subtle txt-small",
-                    {
-                      "grid-cols-2": (collections?.length || 0) > 3,
-                    }
-                  )}
+              <div
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 400,
+                  fontSize: "9px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.22em",
+                  color: "var(--color-bark)",
+                }}
+              >
+                · Organics ·
+              </div>
+            </div>
+
+            {/* Tagline */}
+            <p
+              className="italic mb-6"
+              style={{
+                fontFamily: "var(--font-display)",
+                fontSize: "16px",
+                color: "rgba(255,255,255,0.5)",
+                lineHeight: 1.5,
+              }}
+            >
+              Conecta tu piel con la naturaleza.
+            </p>
+
+            {/* Social links */}
+            <div className="flex gap-4">
+              {[
+                { label: "Instagram", href: "https://instagram.com/saviaorganics" },
+                { label: "TikTok",    href: "https://tiktok.com/@saviaorganics"   },
+              ].map(({ label, href }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    fontFamily: "var(--font-label)",
+                    fontWeight: 700,
+                    fontSize: "11px",
+                    textTransform: "uppercase",
+                    letterSpacing: "0.057em",
+                    color: "rgba(255,255,255,0.45)",
+                    transition: "color 0.2s",
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.color = "var(--color-mist)")}
+                  onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
                 >
-                  {collections?.slice(0, 6).map((c) => (
+                  {label}
+                </a>
+              ))}
+            </div>
+          </div>
+
+          {/* Links grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-10">
+
+            {/* Productos */}
+            <div>
+              <span
+                className="block mb-4"
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "11px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.091em",
+                  color: "var(--color-mist)",
+                }}
+              >
+                Productos
+              </span>
+              <ul className="flex flex-col gap-y-2">
+                {[
+                  { label: "Jabones artesanales", href: "/categories/jabones"  },
+                  { label: "Bálsamos labiales",   href: "/categories/balsamos" },
+                  { label: "Aceites de cutícula", href: "/categories/aceites"  },
+                  { label: "Ver todo",            href: "/store"               },
+                ].map(({ label, href }) => (
+                  <li key={href}>
+                    <LocalizedClientLink
+                      href={href}
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        color: "rgba(255,255,255,0.45)",
+                        transition: "color 0.2s",
+                      }}
+                    >
+                      {label}
+                    </LocalizedClientLink>
+                  </li>
+                ))}
+                {productCategories?.slice(0, 4).map((c) => {
+                  if (c.parent_category) return null
+                  return (
                     <li key={c.id}>
                       <LocalizedClientLink
-                        className="hover:text-ui-fg-base"
-                        href={`/collections/${c.handle}`}
+                        href={`/categories/${c.handle}`}
+                        style={{
+                          fontFamily: "var(--font-body)",
+                          fontSize: "14px",
+                          color: "rgba(255,255,255,0.35)",
+                        }}
                       >
-                        {c.title}
+                        {c.name}
                       </LocalizedClientLink>
                     </li>
-                  ))}
-                </ul>
-              </div>
-            )}
-            <div className="flex flex-col gap-y-2">
-              <span className="txt-small-plus txt-ui-fg-base">Medusa</span>
-              <ul className="grid grid-cols-1 gap-y-2 text-ui-fg-subtle txt-small">
-                <li>
-                  <a
-                    href="https://github.com/medusajs"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    GitHub
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://docs.medusajs.com"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Documentation
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="https://github.com/medusajs/dtc-starter"
-                    target="_blank"
-                    rel="noreferrer"
-                    className="hover:text-ui-fg-base"
-                  >
-                    Source code
-                  </a>
-                </li>
+                  )
+                })}
+              </ul>
+            </div>
+
+            {/* Información */}
+            <div>
+              <span
+                className="block mb-4"
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "11px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.091em",
+                  color: "var(--color-mist)",
+                }}
+              >
+                Información
+              </span>
+              <ul className="flex flex-col gap-y-2">
+                {[
+                  { label: "Sobre nosotras",        href: "/sobre-nosotras"  },
+                  { label: "Ingredientes",           href: "/ingredientes"    },
+                  { label: "Política de envíos",     href: "/envios"          },
+                  { label: "Devoluciones",           href: "/devoluciones"    },
+                  { label: "Aviso legal",            href: "/aviso-legal"     },
+                  { label: "Política de privacidad", href: "/privacidad"      },
+                ].map(({ label, href }) => (
+                  <li key={href}>
+                    <LocalizedClientLink
+                      href={href}
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        color: "rgba(255,255,255,0.45)",
+                      }}
+                    >
+                      {label}
+                    </LocalizedClientLink>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            {/* Contacto */}
+            <div>
+              <span
+                className="block mb-4"
+                style={{
+                  fontFamily: "var(--font-label)",
+                  fontWeight: 700,
+                  fontSize: "11px",
+                  textTransform: "uppercase",
+                  letterSpacing: "0.091em",
+                  color: "var(--color-mist)",
+                }}
+              >
+                Contacto
+              </span>
+              <ul className="flex flex-col gap-y-2">
+                {[
+                  { label: "hola@saviaorganic.com", href: "mailto:hola@saviaorganic.com" },
+                  { label: "Instagram",             href: "https://instagram.com/saviaorganics" },
+                ].map(({ label, href }) => (
+                  <li key={href}>
+                    <a
+                      href={href}
+                      style={{
+                        fontFamily: "var(--font-body)",
+                        fontSize: "14px",
+                        color: "rgba(255,255,255,0.45)",
+                      }}
+                    >
+                      {label}
+                    </a>
+                  </li>
+                ))}
               </ul>
             </div>
           </div>
         </div>
-        <div className="flex w-full mb-16 justify-between text-ui-fg-muted">
-          <Text className="txt-compact-small">
-            © {new Date().getFullYear()} Medusa Store. All rights reserved.
+
+        {/* Bottom bar */}
+        <div
+          className="flex flex-col small:flex-row justify-between items-center gap-4 mt-16 pt-8"
+          style={{ borderTop: "1px solid rgba(255,255,255,0.08)" }}
+        >
+          <Text
+            style={{
+              fontFamily: "var(--font-body)",
+              fontSize: "12px",
+              color: "rgba(255,255,255,0.3)",
+            }}
+          >
+            © {new Date().getFullYear()} Savia Organics. Todos los derechos reservados.
           </Text>
-          <MedusaCTA />
+          <div
+            style={{
+              fontFamily: "var(--font-label)",
+              fontSize: "11px",
+              fontWeight: 700,
+              textTransform: "uppercase",
+              letterSpacing: "0.057em",
+              color: "rgba(255,255,255,0.2)",
+            }}
+          >
+            100% Orgánico · Hecho con amor
+          </div>
         </div>
       </div>
     </footer>
-  );
+  )
 }
