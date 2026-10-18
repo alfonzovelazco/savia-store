@@ -1,135 +1,130 @@
 import { Suspense } from "react"
-
-import { listLocales } from "@lib/data/locales"
-import { getLocale } from "@lib/data/locale-actions"
 import { listRegions } from "@lib/data/regions"
 import { StoreRegion } from "@medusajs/types"
 import LocalizedClientLink from "@modules/common/components/localized-client-link"
 import CartButton from "@modules/layout/components/cart-button"
-import Search from "@modules/layout/components/search"
 import SideMenu from "@modules/layout/components/side-menu"
 
 export default async function Nav() {
-  const [regions, locales, currentLocale] = await Promise.all([
-    listRegions().then((regions: StoreRegion[]) => regions),
-    listLocales(),
-    getLocale(),
-  ])
+  const regions = await listRegions().then((regions: StoreRegion[]) => regions)
 
   return (
-    <div className="sticky top-0 inset-x-0 z-50 group">
+    <div
+      className="sticky top-0 inset-x-0 z-50 group"
+      style={{ height: "var(--nav-height, 64px)" }}
+    >
       <header
-        className="relative h-16 mx-auto"
+        className="relative h-full"
         style={{
-          backgroundColor: "var(--color-ivory)",
-          borderBottom: "1px solid var(--color-hairline)",
+          background: "var(--color-ivory, #f8f6f1)",
+          borderBottom: "1px solid rgba(10,17,15,0.08)",
         }}
       >
-        <nav
-          className="content-container flex items-center justify-between w-full h-full"
-          style={{ fontFamily: "var(--font-label)" }}
-        >
-          {/* Left: hamburger menu (mobile) + nav links (desktop) */}
-          <div className="flex-1 basis-0 h-full flex items-center gap-x-6">
-            <div className="h-full small:hidden">
-              <SideMenu regions={regions} locales={locales} currentLocale={currentLocale} />
+        <nav className="content-container flex items-center justify-between h-full">
+          {/* LEFT — Mobile menu + desktop links */}
+          <div className="flex items-center gap-8 h-full">
+            <div className="small:hidden">
+              <SideMenu regions={regions} />
             </div>
-            <div className="hidden small:flex items-center gap-x-6 h-full">
+            <div className="hidden small:flex items-center gap-7 h-full">
               {[
-                { href: "/store",              label: "Tienda"    },
-                { href: "/categories/jabones", label: "Jabones"   },
-                { href: "/categories/balsamos",label: "Bálsamos"  },
-                { href: "/categories/aceites", label: "Aceites"   },
-              ].map(({ href, label }) => (
+                { label: "Tienda", href: "/store" },
+                { label: "Jabones", href: "/collections/jabones" },
+                { label: "Bálsamos", href: "/collections/balsamos" },
+                { label: "Aceites", href: "/collections/aceites" },
+              ].map((link) => (
                 <LocalizedClientLink
-                  key={href}
-                  href={href}
-                  className="transition-colors"
+                  key={link.href}
+                  href={link.href}
                   style={{
                     fontFamily: "var(--font-label)",
                     fontWeight: 700,
-                    fontSize: "13px",
+                    fontSize: "11px",
                     textTransform: "uppercase",
-                    letterSpacing: "0.057em",
-                    color: "var(--color-charcoal)",
+                    letterSpacing: "0.1em",
+                    color: "var(--color-carbon-ink)",
+                    textDecoration: "none",
+                    opacity: 0.7,
+                    transition: "opacity 0.15s",
                   }}
+                  className="hover:opacity-100"
                 >
-                  {label}
+                  {link.label}
                 </LocalizedClientLink>
               ))}
             </div>
           </div>
 
-          {/* Center: Savia Organics wordmark */}
-          <div className="flex items-center h-full">
-            <LocalizedClientLink
-              href="/"
-              className="flex flex-col items-center leading-none"
-              data-testid="nav-store-link"
-            >
+          {/* CENTER — Logo */}
+          <LocalizedClientLink
+            href="/"
+            style={{ textDecoration: "none", position: "absolute", left: "50%", transform: "translateX(-50%)" }}
+          >
+            <div className="flex flex-col items-center leading-none select-none">
               <span
                 style={{
-                  fontFamily: "var(--font-label)",
-                  fontWeight: 700,
-                  fontSize: "18px",
+                  fontFamily: "var(--font-display)",
+                  fontWeight: 600,
+                  fontSize: "22px",
+                  letterSpacing: "0.18em",
                   textTransform: "uppercase",
-                  letterSpacing: "0.12em",
-                  color: "var(--color-forest)",
+                  color: "var(--color-carbon-ink)",
+                  lineHeight: 1,
                 }}
               >
-                Savia
+                SAVIA
               </span>
               <span
                 style={{
                   fontFamily: "var(--font-label)",
-                  fontWeight: 400,
-                  fontSize: "9px",
-                  textTransform: "uppercase",
+                  fontWeight: 700,
+                  fontSize: "8px",
                   letterSpacing: "0.22em",
-                  color: "var(--color-bark)",
-                  marginTop: "-1px",
-                }}
-              >
-                · Organics ·
-              </span>
-            </LocalizedClientLink>
-          </div>
-
-          {/* Right: search, account, cart */}
-          <div className="flex items-center gap-x-5 h-full flex-1 basis-0 justify-end">
-            <Search />
-            <div className="hidden small:flex items-center gap-x-5 h-full">
-              <LocalizedClientLink
-                href="/account"
-                data-testid="nav-account-link"
-                style={{
-                  fontFamily: "var(--font-label)",
-                  fontWeight: 700,
-                  fontSize: "12px",
                   textTransform: "uppercase",
-                  letterSpacing: "0.057em",
-                  color: "var(--color-stone)",
+                  color: "rgba(10,17,15,0.5)",
+                  lineHeight: 1,
+                  marginTop: "3px",
                 }}
               >
-                Mi cuenta
-              </LocalizedClientLink>
+                · ORGANICS ·
+              </span>
             </div>
+          </LocalizedClientLink>
+
+          {/* RIGHT — Search, Account, Cart */}
+          <div className="flex items-center gap-5">
+            <LocalizedClientLink
+              href="/account"
+              style={{
+                fontFamily: "var(--font-label)",
+                fontWeight: 700,
+                fontSize: "11px",
+                textTransform: "uppercase",
+                letterSpacing: "0.1em",
+                color: "var(--color-carbon-ink)",
+                textDecoration: "none",
+                opacity: 0.7,
+                transition: "opacity 0.15s",
+              }}
+              className="hidden small:block hover:opacity-100"
+            >
+              Mi cuenta
+            </LocalizedClientLink>
             <Suspense
               fallback={
-                <LocalizedClientLink
-                  href="/cart"
-                  data-testid="nav-cart-link"
+                <span
                   style={{
                     fontFamily: "var(--font-label)",
                     fontWeight: 700,
-                    fontSize: "12px",
+                    fontSize: "11px",
                     textTransform: "uppercase",
-                    letterSpacing: "0.057em",
-                    color: "var(--color-charcoal)",
+                    letterSpacing: "0.1em",
+                    color: "var(--color-carbon-ink)",
+                    opacity: 0.7,
                   }}
                 >
                   Cesta (0)
-                </LocalizedClientLink>
+                </span>
               }
             >
               <CartButton />
