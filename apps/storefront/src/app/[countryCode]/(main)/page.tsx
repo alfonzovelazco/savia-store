@@ -6,17 +6,22 @@ import { getRegion } from "@lib/data/regions"
 export const metadata: Metadata = {
   title: "Savia Organics — Jabones Artesanales Naturales | Cosmética Natural España",
   description: "Jabones artesanales ecológicos elaborados con ingredientes naturales. Para piel seca, manchas, piel sensible y mixta. Envío gratis +30€. Cosmética natural hecha con amor en España.",
-  keywords: "jabones artesanales naturales, cosmética natural españa, jabón arroz piel seca, jabón cúrcuma manchas, jabón aloe vera piel sensible, jabón avena miel, cosmética ecológica, productos naturales piel",
 }
 
 export default async function Home({ params }: { params: { countryCode: string } }) {
   const { countryCode } = params
   const region = await getRegion(countryCode)
-  const { response: { collections } } = await listCollections({ fields: "id, handle, title" })
+
+  let collections: any[] = []
+  try {
+    const result = await listCollections({ fields: "id, handle, title" })
+    collections = result?.response?.collections ?? result?.collections ?? []
+  } catch (e) {
+    collections = []
+  }
 
   return (
     <>
-      {/* ── TRUST BAR ── */}
       <section style={{ background: "var(--color-deep, #0a110f)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "14px 0" }}>
         <div className="content-container">
           <div className="grid grid-cols-3 gap-4 text-center">
@@ -34,7 +39,6 @@ export default async function Home({ params }: { params: { countryCode: string }
         </div>
       </section>
 
-      {/* ── GUÍA DE PIEL ── */}
       <section style={{ background: "var(--color-paper-white, #f7f5f0)", padding: "80px 0" }}>
         <div className="content-container">
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
@@ -42,41 +46,12 @@ export default async function Home({ params }: { params: { countryCode: string }
             <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 5vw, 48px)", color: "var(--color-deep, #0a110f)", marginTop: "8px", lineHeight: 1.15 }}>¿Qué necesita tu piel?</h2>
             <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "var(--color-deep, #0a110f)", opacity: 0.55, marginTop: "12px", maxWidth: "480px", margin: "12px auto 0" }}>Cada piel es única. Te ayudamos a encontrar el jabón artesanal perfecto para tu tipo de piel.</p>
           </div>
-
           <div className="grid grid-cols-1 small:grid-cols-2 large:grid-cols-4 gap-6">
             {[
-              {
-                tipo: "Piel Seca",
-                problema: "¿Sientes tirantez o descamación?",
-                solucion: "Jabón de Arroz",
-                descripcion: "El almidón de arroz nutre en profundidad y restaura la barrera hidrolipídica de la piel más seca.",
-                ingrediente: "Arroz · Manteca de karité",
-                color: "#e8ddd0",
-              },
-              {
-                tipo: "Manchas & Tono",
-                problema: "¿Manchas o tono desigual?",
-                solucion: "Jabón de Cúrcuma",
-                descripcion: "La cúrcuma ilumina de forma natural y unifica el tono sin irritar. Visible desde la primera semana.",
-                ingrediente: "Cúrcuma · Aceite de coco",
-                color: "#f0e4c0",
-              },
-              {
-                tipo: "Piel Sensible",
-                problema: "¿Rojeces o irritación frecuente?",
-                solucion: "Jabón de Aloe Vera",
-                descripcion: "Ultra suave y calmante. El aloe vera reduce la inflamación y deja la piel en calma desde el primer uso.",
-                ingrediente: "Aloe vera · Manzanilla",
-                color: "#d8ebd8",
-              },
-              {
-                tipo: "Piel Mixta",
-                problema: "¿Zonas grasas y secas a la vez?",
-                solucion: "Jabón de Avena y Miel",
-                descripcion: "Equilibra sin resecar. La avena calma y la miel aporta hidratación donde más se necesita.",
-                ingrediente: "Avena · Miel de abeja",
-                color: "#e8e0cc",
-              },
+              { tipo: "Piel Seca", problema: "¿Sientes tirantez o descamación?", solucion: "Jabón de Arroz", descripcion: "El almidón de arroz nutre en profundidad y restaura la barrera hidrolipídica de la piel más seca.", ingrediente: "Arroz · Manteca de karité", color: "#e8ddd0" },
+              { tipo: "Manchas & Tono", problema: "¿Manchas o tono desigual?", solucion: "Jabón de Cúrcuma", descripcion: "La cúrcuma ilumina de forma natural y unifica el tono sin irritar. Visible desde la primera semana.", ingrediente: "Cúrcuma · Aceite de coco", color: "#f0e4c0" },
+              { tipo: "Piel Sensible", problema: "¿Rojeces o irritación frecuente?", solucion: "Jabón de Aloe Vera", descripcion: "Ultra suave y calmante. El aloe vera reduce la inflamación y deja la piel en calma desde el primer uso.", ingrediente: "Aloe vera · Manzanilla", color: "#d8ebd8" },
+              { tipo: "Piel Mixta", problema: "¿Zonas grasas y secas a la vez?", solucion: "Jabón de Avena y Miel", descripcion: "Equilibra sin resecar. La avena calma y la miel aporta hidratación donde más se necesita.", ingrediente: "Avena · Miel de abeja", color: "#e8e0cc" },
             ].map(card => (
               <div key={card.tipo} style={{ background: card.color, borderRadius: "8px", padding: "28px 24px", display: "flex", flexDirection: "column", gap: "12px" }}>
                 <span style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--color-deep, #0a110f)", opacity: 0.5 }}>{card.tipo}</span>
@@ -91,20 +66,18 @@ export default async function Home({ params }: { params: { countryCode: string }
         </div>
       </section>
 
-      {/* ── PRODUCTOS DESTACADOS ── */}
       <section style={{ background: "var(--color-ivory, #faf8f3)", padding: "80px 0" }}>
         <div className="content-container">
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
             <span style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--color-carbon-ink, #1a2e1a)", opacity: 0.5 }}>Nuestros productos</span>
             <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(28px, 4vw, 42px)", color: "var(--color-deep, #0a110f)", marginTop: "8px" }}>Elaborados con intención</h2>
           </div>
-          {region && (
+          {region && collections.length > 0 && (
             <FeaturedProducts collections={collections} region={region} />
           )}
         </div>
       </section>
 
-      {/* ── PROCESO ── */}
       <section style={{ background: "var(--color-deep, #0a110f)", padding: "80px 0" }}>
         <div className="content-container">
           <div style={{ textAlign: "center", marginBottom: "56px" }}>
@@ -127,7 +100,6 @@ export default async function Home({ params }: { params: { countryCode: string }
         </div>
       </section>
 
-      {/* ── TESTIMONIOS ── */}
       <section style={{ background: "var(--color-mist, #c8d4c0)", padding: "80px 0" }}>
         <div className="content-container">
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
@@ -136,15 +108,13 @@ export default async function Home({ params }: { params: { countryCode: string }
           </div>
           <div className="grid grid-cols-1 small:grid-cols-3 gap-6">
             {[
-              { nombre: "Laura M.", ciudad: "Madrid", texto: "Llevo 3 semanas usando el jabón de cúrcuma y mis manchas han mejorado notablemente. Jamás pensé que un jabón natural pudiera hacer tanto. Mi piel está más luminosa que nunca.", producto: "Jabón de Cúrcuma", estrellas: 5 },
-              { nombre: "Carmen R.", ciudad: "Barcelona", texto: "Tengo la piel muy sensible y probé todo. Con el jabón de aloe vera desaparecieron las rojeces en días. Huele increíble y mi piel ya no tira después de lavarse.", producto: "Jabón de Aloe Vera", estrellas: 5 },
-              { nombre: "Ana P.", ciudad: "Valencia", texto: "El jabón de arroz es una maravilla. En invierno mi piel estaba deshidratada y reseca, ahora está suave todo el día. Lo he regalado a mi madre y ella también está enamorada.", producto: "Jabón de Arroz", estrellas: 5 },
+              { nombre: "Laura M.", ciudad: "Madrid", texto: "Llevo 3 semanas usando el jabón de cúrcuma y mis manchas han mejorado notablemente. Jamás pensé que un jabón natural pudiera hacer tanto. Mi piel está más luminosa que nunca.", producto: "Jabón de Cúrcuma" },
+              { nombre: "Carmen R.", ciudad: "Barcelona", texto: "Tengo la piel muy sensible y probé todo. Con el jabón de aloe vera desaparecieron las rojeces en días. Huele increíble y mi piel ya no tira después de lavarse.", producto: "Jabón de Aloe Vera" },
+              { nombre: "Ana P.", ciudad: "Valencia", texto: "El jabón de arroz es una maravilla. En invierno mi piel estaba deshidratada y reseca, ahora está suave todo el día. Lo he regalado a mi madre y ella también está enamorada.", producto: "Jabón de Arroz" },
             ].map(t => (
-              <div key={t.nombre} style={{ background: "rgba(255,255,255,0.5)", borderRadius: "8px", padding: "28px 24px", backdropFilter: "blur(4px)" }}>
+              <div key={t.nombre} style={{ background: "rgba(255,255,255,0.5)", borderRadius: "8px", padding: "28px 24px" }}>
                 <div style={{ display: "flex", gap: "2px", marginBottom: "16px" }}>
-                  {Array(t.estrellas).fill("★").map((s, i) => (
-                    <span key={i} style={{ color: "var(--color-carbon-ink, #1a2e1a)", fontSize: "14px" }}>{s}</span>
-                  ))}
+                  {"★★★★★".split("").map((s, i) => <span key={i} style={{ color: "var(--color-carbon-ink, #1a2e1a)", fontSize: "14px" }}>{s}</span>)}
                 </div>
                 <p style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "var(--color-deep, #0a110f)", lineHeight: 1.7, marginBottom: "20px", fontStyle: "italic" }}>"{t.texto}"</p>
                 <div style={{ borderTop: "1px solid rgba(0,0,0,0.1)", paddingTop: "16px" }}>
@@ -157,22 +127,15 @@ export default async function Home({ params }: { params: { countryCode: string }
         </div>
       </section>
 
-      {/* ── INGREDIENTES / TRANSPARENCIA ── */}
       <section style={{ background: "var(--color-paper-white, #f7f5f0)", padding: "80px 0" }}>
         <div className="content-container">
           <div className="grid grid-cols-1 small:grid-cols-2 gap-16 items-center">
             <div>
               <span style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--color-carbon-ink, #1a2e1a)", opacity: 0.5 }}>Transparencia total</span>
               <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(28px, 4vw, 42px)", color: "var(--color-deep, #0a110f)", marginTop: "8px", marginBottom: "20px" }}>Sabemos lo que ponemos en tu piel</h2>
-              <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "var(--color-deep, #0a110f)", opacity: 0.6, lineHeight: 1.8, marginBottom: "24px" }}>En Savia no escondemos nada. Cada ingrediente tiene un propósito y lo explicamos con claridad. Sin mezclas misteriosas, sin químicos innecesarios.</p>
+              <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "var(--color-deep, #0a110f)", opacity: 0.6, lineHeight: 1.8, marginBottom: "24px" }}>En Savia no escondemos nada. Cada ingrediente tiene un propósito y lo explicamos con claridad.</p>
               <div className="flex flex-col gap-3">
-                {[
-                  "✓  Sin sulfatos SLS/SLES",
-                  "✓  Sin parabenos ni conservantes artificiales",
-                  "✓  Sin colorantes sintéticos",
-                  "✓  Aceites vegetales de primera presión",
-                  "✓  pH equilibrado para la piel",
-                ].map(item => (
+                {["✓  Sin sulfatos SLS/SLES", "✓  Sin parabenos ni conservantes artificiales", "✓  Sin colorantes sintéticos", "✓  Aceites vegetales de primera presión", "✓  pH equilibrado para la piel"].map(item => (
                   <p key={item} style={{ fontFamily: "var(--font-body)", fontSize: "14px", color: "var(--color-deep, #0a110f)", opacity: 0.75, margin: 0 }}>{item}</p>
                 ))}
               </div>
@@ -196,16 +159,14 @@ export default async function Home({ params }: { params: { countryCode: string }
         </div>
       </section>
 
-      {/* ── MANIFIESTO ── */}
       <section style={{ background: "var(--color-carbon-ink, #1a2e1a)", padding: "80px 0" }}>
         <div className="content-container" style={{ textAlign: "center", maxWidth: "680px", margin: "0 auto" }}>
           <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(28px, 5vw, 52px)", color: "rgba(255,255,255,0.9)", lineHeight: 1.2, marginBottom: "24px" }}>La naturaleza tiene todas las respuestas. Nosotras solo las escuchamos.</h2>
-          <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, marginBottom: "36px" }}>Creamos jabones que respetan tu piel y el planeta. Sin atajos, sin ingredientes vacíos, sin pretensiones. Solo lo esencial, hecho bien.</p>
+          <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "rgba(255,255,255,0.5)", lineHeight: 1.8, marginBottom: "36px" }}>Creamos jabones que respetan tu piel y el planeta. Sin atajos, sin ingredientes vacíos, sin pretensiones.</p>
           <a href="/store" style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "12px", textTransform: "uppercase", letterSpacing: "0.15em", color: "var(--color-carbon-ink, #1a2e1a)", background: "rgba(255,255,255,0.9)", padding: "14px 32px", borderRadius: "4px", textDecoration: "none", display: "inline-block" }}>Descubrir la colección</a>
         </div>
       </section>
 
-      {/* ── FAQ ── */}
       <section style={{ background: "var(--color-ivory, #faf8f3)", padding: "80px 0" }}>
         <div className="content-container" style={{ maxWidth: "720px", margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
@@ -214,22 +175,10 @@ export default async function Home({ params }: { params: { countryCode: string }
           </div>
           <div className="flex flex-col gap-0">
             {[
-              {
-                q: "¿Son seguros los jabones naturales para pieles sensibles?",
-                a: "Sí. Nuestros jabones están formulados sin irritantes comunes como SLS, parabenos o perfumes sintéticos. El jabón de Aloe Vera está especialmente indicado para pieles sensibles, atópicas o reactivas. Si tienes alguna alergia específica, revisa la lista de ingredientes de cada producto."
-              },
-              {
-                q: "¿Cuánto tiempo dura un jabón artesanal?",
-                a: "Depende del uso, pero en condiciones normales (manteniéndolo fuera del agua entre usos) un jabón de 100g dura entre 4 y 6 semanas. Al ser jabones sin conservantes adicionales, recomendamos usarlos antes de 12 meses desde la compra."
-              },
-              {
-                q: "¿Hacéis envíos a toda España?",
-                a: "Sí, enviamos a toda la España peninsular e islas. Los pedidos superiores a 30€ tienen envío gratuito. Los pedidos suelen entregarse en 2-4 días hábiles desde el momento del pago."
-              },
-              {
-                q: "¿Puedo devolver el producto si no me convence?",
-                a: "Aceptamos devoluciones en los 14 días siguientes a la recepción si el producto no ha sido abierto. Si el jabón presenta algún defecto o llega en mal estado, contáctanos y lo solucionamos de inmediato sin coste para ti."
-              },
+              { q: "¿Son seguros los jabones naturales para pieles sensibles?", a: "Sí. Nuestros jabones están formulados sin irritantes comunes como SLS, parabenos o perfumes sintéticos. El jabón de Aloe Vera está especialmente indicado para pieles sensibles, atópicas o reactivas." },
+              { q: "¿Cuánto tiempo dura un jabón artesanal?", a: "En condiciones normales (manteniéndolo fuera del agua entre usos) un jabón de 100g dura entre 4 y 6 semanas. Recomendamos usarlos antes de 12 meses desde la compra." },
+              { q: "¿Hacéis envíos a toda España?", a: "Sí, enviamos a toda la España peninsular e islas. Los pedidos superiores a 30€ tienen envío gratuito. Entrega en 2-4 días hábiles desde el momento del pago." },
+              { q: "¿Puedo devolver el producto si no me convence?", a: "Aceptamos devoluciones en los 14 días siguientes a la recepción si el producto no ha sido abierto. Si el jabón presenta algún defecto, contáctanos y lo solucionamos de inmediato." },
             ].map((faq, i) => (
               <div key={i} style={{ borderBottom: "1px solid rgba(26,46,26,0.1)", padding: "24px 0" }}>
                 <p style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "14px", textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--color-deep, #0a110f)", margin: "0 0 10px" }}>{faq.q}</p>
