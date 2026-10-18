@@ -7,7 +7,6 @@ COPY apps/backend/package*.json ./apps/backend/
 RUN npm install --legacy-peer-deps
 COPY apps/backend ./apps/backend
 WORKDIR /app/apps/backend
-ARG CACHE_BUST=1
-RUN npm run build
+RUN npm run build && cp -r .medusa/server /app/.medusa-server
 EXPOSE 9000
-CMD ["sh", "-c", "cd /app/apps/backend && npx medusa db:migrate && node .medusa/server/index.js"]
+CMD ["sh", "-c", "cd /app/apps/backend && npx medusa db:migrate && node /app/.medusa-server/index.js"]
