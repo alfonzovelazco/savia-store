@@ -16,6 +16,8 @@ WORKDIR /app/apps/backend
 
 RUN npm run build
 
+RUN find /app -name "index.js" -path "*/.medusa/*" 2>/dev/null || echo "NO MEDUSA INDEX FOUND"
+
 EXPOSE 9000
 
-CMD ["sh", "-c", "npx medusa db:migrate && node /app/apps/backend/.medusa/server/index.js"]
+CMD ["sh", "-c", "npx medusa db:migrate && npx medusa start"]
