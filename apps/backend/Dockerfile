@@ -10,5 +10,6 @@ WORKDIR /app/apps/backend
 RUN npm run build
 WORKDIR /app/apps/backend/.medusa/server
 RUN npm install --legacy-peer-deps
+RUN echo "=== package.json scripts ===" && cat package.json
 EXPOSE 9000
-CMD ["sh", "-c", "npm run predeploy && npm run start"]
+CMD ["sh", "-c", "medusa db:migrate && npm run start"]
