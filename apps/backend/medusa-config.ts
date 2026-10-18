@@ -3,6 +3,10 @@ import { loadEnv, defineConfig } from '@medusajs/framework/utils'
 loadEnv(process.env.NODE_ENV || 'development', process.cwd())
 
 module.exports = defineConfig({
+  admin: {
+    disable: false,
+    backendUrl: process.env.MEDUSA_BACKEND_URL || 'https://medusa-admin.i8knmp.easypanel.host',
+  },
   projectConfig: {
     databaseUrl: process.env.DATABASE_URL,
     http: {
