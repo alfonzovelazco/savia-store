@@ -3,38 +3,61 @@
 @import "tailwindcss/utilities";
 
 /* ── Savia Organics — Google Fonts ── */
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400;1,500&family=DM+Sans:wght@400;500;600;700&family=Geist:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;1,400&family=Barlow+Condensed:wght@700&family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400&display=swap');
 
 :root {
-  /* Brand colors */
-  --color-forest:   #3d5a3e;
-  --color-sage:     #6b8f71;
-  --color-mist:     #a8c5ac;
-  --color-cream:    #f5f0e8;
-  --color-ivory:    #faf7f2;
-  --color-bark:     #7a6652;
-  --color-charcoal: #2a2a2a;
-  --color-stone:    #5c5c5c;
-  --color-hairline: #ddd8cf;
-  --color-fog:      #edeae4;
-  --color-deep:     #1e2e1f;
+  /* ── Color tokens ── */
+  --color-carbon-ink:   #1a211e;
+  --color-paper-white:  #ffffff;
+  --color-true-black:   #000000;
+  --color-obsidian:     #0c0c0c;
+  --color-fog:          #eef1f0;
+  --color-mist:         #e0e0e0;
+  --color-graphite:     #606562;
+  --color-ash-border:   #cccfcd;
+  --color-slate:        #363537;
+  --color-pewter:       #4e4e4e;
+  --color-ember-red:    #cc2e39;
 
-  /* Typography */
-  --font-display: 'Playfair Display', Georgia, serif;
-  --font-label:   'DM Sans', Inter, sans-serif;
-  --font-body:    'Geist', Inter, sans-serif;
+  /* ── Surface tokens ── */
+  --surface-canvas:     #ffffff;
+  --surface-soft-card:  #eef1f0;
+  --surface-hairline:   #e0e0e0;
+  --surface-deep-panel: #0c0c0c;
+
+  /* ── Spacing ── */
+  --spacing-unit: 4px;
+
+  /* ── Radius ── */
+  --radius-md:   4px;
+  --radius-lg:   8px;
+  --radius-3xl:  32px;
+  --radius-full: 9999px;
+
+  /* ── Typography ── */
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-label:   'Barlow Condensed', ui-sans-serif, sans-serif;
+  --font-body:    'Geist', ui-sans-serif, sans-serif;
+  --font-mono:    'Geist Mono', ui-monospace, monospace;
+
+  /* Backward-compat aliases */
+  --color-charcoal: var(--color-carbon-ink);
+  --color-ivory:    var(--surface-canvas);
+  --color-hairline: var(--surface-hairline);
+  --color-forest:   var(--color-carbon-ink);
+  --color-deep:     var(--color-obsidian);
 }
 
 /* ── Global reset ── */
 html {
-  background-color: var(--color-ivory);
-  color: var(--color-charcoal);
+  background-color: var(--surface-canvas);
+  color: var(--color-carbon-ink);
 }
 
 body {
   font-family: var(--font-body);
-  background-color: var(--color-ivory);
-  color: var(--color-charcoal);
+  background-color: var(--surface-canvas);
+  color: var(--color-carbon-ink);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -60,9 +83,9 @@ body {
   select:-webkit-autofill,
   select:-webkit-autofill:hover,
   select:-webkit-autofill:focus {
-    border: 1px solid var(--color-forest);
-    -webkit-text-fill-color: var(--color-charcoal);
-    -webkit-box-shadow: 0 0 0px 1000px var(--color-ivory) inset;
+    border: 1px solid var(--color-ash-border);
+    -webkit-text-fill-color: var(--color-carbon-ink);
+    -webkit-box-shadow: 0 0 0px 1000px var(--surface-canvas) inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 
@@ -79,7 +102,7 @@ body {
     @apply max-w-[1440px] w-full mx-auto px-6;
   }
 
-  /* ── Savia display serif ── */
+  /* ── Display serif (Cormorant Garamond → Exposure-10 equivalent) ── */
   .savia-display {
     font-family: var(--font-display);
     font-style: italic;
@@ -88,7 +111,7 @@ body {
     line-height: 1.1;
   }
 
-  /* ── Savia label / button text ── */
+  /* ── Condensed label (Barlow Condensed → Bryant equivalent) ── */
   .savia-label {
     font-family: var(--font-label);
     font-weight: 700;
@@ -96,7 +119,7 @@ body {
     letter-spacing: 0.057em;
   }
 
-  /* ── Primary CTA button — forest green filled ── */
+  /* ── Primary CTA — carbon ink filled ── */
   .btn-savia-primary {
     @apply inline-flex items-center justify-center;
     font-family: var(--font-label);
@@ -104,16 +127,16 @@ body {
     font-size: 14px;
     text-transform: uppercase;
     letter-spacing: 0.057em;
-    background-color: var(--color-forest);
-    color: #fff;
-    border: 1px solid var(--color-forest);
-    border-radius: 4px;
+    background-color: var(--color-carbon-ink);
+    color: var(--color-paper-white);
+    border: 1px solid var(--color-carbon-ink);
+    border-radius: var(--radius-md);
     padding: 12px 24px;
     transition: background-color 0.2s ease, opacity 0.2s ease;
   }
   .btn-savia-primary:hover {
-    background-color: var(--color-deep);
-    border-color: var(--color-deep);
+    background-color: var(--color-obsidian);
+    border-color: var(--color-obsidian);
   }
 
   /* ── Outlined button ── */
@@ -125,18 +148,18 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.057em;
     background-color: transparent;
-    color: var(--color-charcoal);
-    border: 1px solid var(--color-charcoal);
-    border-radius: 4px;
+    color: var(--color-carbon-ink);
+    border: 1px solid var(--color-carbon-ink);
+    border-radius: var(--radius-md);
     padding: 12px 24px;
     transition: background-color 0.2s ease, color 0.2s ease;
   }
   .btn-savia-outline:hover {
-    background-color: var(--color-charcoal);
-    color: #fff;
+    background-color: var(--color-carbon-ink);
+    color: var(--color-paper-white);
   }
 
-  /* ── Ghost outlined (on dark panels) ── */
+  /* ── Ghost outlined (on deep panels) ── */
   .btn-savia-ghost {
     @apply inline-flex items-center justify-center;
     font-family: var(--font-label);
@@ -145,9 +168,9 @@ body {
     text-transform: uppercase;
     letter-spacing: 0.057em;
     background-color: transparent;
-    color: #fff;
-    border: 1px solid #fff;
-    border-radius: 4px;
+    color: var(--color-paper-white);
+    border: 1px solid var(--color-paper-white);
+    border-radius: var(--radius-md);
     padding: 12px 24px;
     transition: opacity 0.2s ease;
   }
@@ -182,5 +205,6 @@ body {
   .text-3xl-regular     { @apply text-[32px] leading-[44px] font-normal; }
   .text-3xl-semi        { @apply text-[32px] leading-[44px] font-semibold; }
 }
+
 .footer-social-link { color: rgba(255,255,255,0.45); transition: color 0.2s; }
 .footer-social-link:hover { color: var(--color-mist); }
