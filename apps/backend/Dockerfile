@@ -9,6 +9,5 @@ COPY apps/backend ./apps/backend
 WORKDIR /app/apps/backend
 RUN npm run build
 RUN cp -r /app/apps/backend/.medusa/server /medusa-app
-RUN echo "=== BUILD VERIFY ===" && ls -la /medusa-app/src/ | head -5
 EXPOSE 9000
-CMD ["sh", "-c", "echo 'STARTING MEDUSA' && cd /app/apps/backend && npx medusa db:migrate && node /medusa-app/src/main.js"]
+CMD ["sh", "-c", "cd /medusa-app && npx medusa db:migrate && npx medusa start"]
