@@ -8,6 +8,7 @@ RUN npm install --legacy-peer-deps
 COPY apps/backend ./apps/backend
 WORKDIR /app/apps/backend
 RUN npm run build
-RUN cp -r /app/apps/backend/.medusa/server /medusa-app
+WORKDIR /app/apps/backend/.medusa/server
+RUN npm install --legacy-peer-deps
 EXPOSE 9000
-CMD ["sh", "-c", "cd /medusa-app && /app/node_modules/.bin/medusa db:migrate && /app/node_modules/.bin/medusa start"]
+CMD ["sh", "-c", "npm run predeploy && npm run start"]
