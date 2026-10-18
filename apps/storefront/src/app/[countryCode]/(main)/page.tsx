@@ -1,4 +1,5 @@
 import { Metadata } from "next"
+import Hero from "@modules/home/components/hero"
 import FeaturedProducts from "@modules/home/components/featured-products"
 import { listCollections } from "@lib/data/collections"
 import { getRegion } from "@lib/data/regions"
@@ -22,6 +23,8 @@ export default async function Home({ params }: { params: { countryCode: string }
 
   return (
     <>
+      <Hero />
+
       <section style={{ background: "var(--color-deep, #0a110f)", borderBottom: "1px solid rgba(255,255,255,0.06)", padding: "14px 0" }}>
         <div className="content-container">
           <div className="grid grid-cols-3 gap-4 text-center">
@@ -44,7 +47,7 @@ export default async function Home({ params }: { params: { countryCode: string }
           <div style={{ textAlign: "center", marginBottom: "48px" }}>
             <span style={{ fontFamily: "var(--font-label)", fontWeight: 700, fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.2em", color: "var(--color-carbon-ink, #1a2e1a)", opacity: 0.5 }}>Encuentra tu jabón ideal</span>
             <h2 style={{ fontFamily: "var(--font-display)", fontStyle: "italic", fontWeight: 400, fontSize: "clamp(32px, 5vw, 48px)", color: "var(--color-deep, #0a110f)", marginTop: "8px", lineHeight: 1.15 }}>¿Qué necesita tu piel?</h2>
-            <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "var(--color-deep, #0a110f)", opacity: 0.55, marginTop: "12px", maxWidth: "480px", margin: "12px auto 0" }}>Cada piel es única. Te ayudamos a encontrar el jabón artesanal perfecto para tu tipo de piel.</p>
+            <p style={{ fontFamily: "var(--font-body)", fontSize: "15px", color: "var(--color-deep, #0a110f)", opacity: 0.55, maxWidth: "480px", margin: "12px auto 0" }}>Cada piel es única. Te ayudamos a encontrar el jabón artesanal perfecto para tu tipo de piel.</p>
           </div>
           <div className="grid grid-cols-1 small:grid-cols-2 large:grid-cols-4 gap-6">
             {[
