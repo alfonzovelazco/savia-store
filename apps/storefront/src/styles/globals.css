@@ -182,3 +182,5 @@ body {
   .text-3xl-regular     { @apply text-[32px] leading-[44px] font-normal; }
   .text-3xl-semi        { @apply text-[32px] leading-[44px] font-semibold; }
 }
+.footer-social-link { color: rgba(255,255,255,0.45); transition: color 0.2s; }
+.footer-social-link:hover { color: var(--color-mist); }

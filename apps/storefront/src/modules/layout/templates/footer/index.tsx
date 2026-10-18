@@ -80,8 +80,7 @@ export default async function Footer() {
                     color: "rgba(255,255,255,0.45)",
                     transition: "color 0.2s",
                   }}
-                  onMouseOver={(e) => (e.currentTarget.style.color = "var(--color-mist)")}
-                  onMouseOut={(e) => (e.currentTarget.style.color = "rgba(255,255,255,0.45)")}
+                  className="footer-social-link"
                 >
                   {label}
                 </a>
