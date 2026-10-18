@@ -6,8 +6,7 @@ COPY turbo.json ./
 COPY apps/backend/package*.json ./apps/backend/
 RUN npm install --legacy-peer-deps
 COPY apps/backend ./apps/backend
-WORKDIR /app/apps/backend
-RUN npm run build
-RUN ls /app/.medusa 2>/dev/null && echo "FOUND IN /app/.medusa" || echo "NOT IN /app/.medusa"
+RUN npx turbo run build --filter=@dtc/backend
+RUN find /app -name ".medusa" -not -path "*/node_modules/*" 2>/dev/null || echo "NO .medusa FOUND"
 EXPOSE 9000
-CMD ["sh", "-c", "npx medusa db:migrate && node /app/.medusa/server/index.js"]
+CMD ["sh", "-c", "cd /app/apps/backend && npx medusa db:migrate && npx medusa start"]
