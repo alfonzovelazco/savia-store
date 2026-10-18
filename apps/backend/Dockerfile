@@ -8,6 +8,6 @@ RUN npm install --legacy-peer-deps
 COPY apps/backend ./apps/backend
 WORKDIR /app/apps/backend
 RUN npm run build
-RUN echo "LS backend:" && ls /app/apps/backend && find /app -maxdepth 6 -name "index.js" -path "*medusa*" 2>/dev/null | head -20
+RUN ls /app/.medusa 2>/dev/null && echo "FOUND IN /app/.medusa" || echo "NOT IN /app/.medusa"
 EXPOSE 9000
-CMD ["sh", "-c", "npx medusa db:migrate && npx medusa start"]
+CMD ["sh", "-c", "npx medusa db:migrate && node /app/.medusa/server/index.js"]
