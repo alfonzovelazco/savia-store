@@ -18,4 +18,4 @@ RUN npm run build
 
 EXPOSE 9000
 
-CMD ["npx", "medusa", "start"]
+CMD ["sh", "-c", "npx medusa db:migrate && npx medusa start"]
