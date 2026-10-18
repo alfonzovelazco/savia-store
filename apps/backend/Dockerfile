@@ -18,4 +18,4 @@ RUN npm run build
 
 EXPOSE 9000
 
-CMD ["sh", "-c", "npx medusa db:migrate && node .medusa/server/index.js"]
+CMD ["sh", "-c", "npx medusa db:migrate && node /app/apps/backend/.medusa/server/index.js"]
